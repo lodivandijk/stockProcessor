@@ -1,21 +1,20 @@
 package com.example.stockProcessor;
 
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
-@Service
+@Component
 public class RestService {
 
-	private final WebClient webClient;
+	@Autowired
+	private WebClient myWebClient;
 
-	public RestService(WebClient.Builder webClientBuilder) {
-		this.webClient = webClientBuilder.build();
+	public String retrieveData(String urlAddress) {
+		return myWebClient
+				.get().uri(urlAddress)
+				.retrieve().bodyToMono(String.class).block();
 	}
 
-	public String someRestCall(String urlAddress) {
-
-		return this.webClient.get().uri(urlAddress)
-						.retrieve().bodyToMono(String.class).block();
-	}
 
 }

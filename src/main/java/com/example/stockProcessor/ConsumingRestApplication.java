@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @SpringBootApplication
 public class ConsumingRestApplication {
@@ -19,10 +20,13 @@ public class ConsumingRestApplication {
 
 	@Bean
 	@Profile("!test")
-	public CommandLineRunner run(RestService restTemplate) throws Exception {
+	public CommandLineRunner run(RestService webTemplate) throws Exception {
 		return args -> {
-			String jsonString = restTemplate.someRestCall("http://localhost:8080/api");
+
+			String jsonString = webTemplate.retrieveData("http://localhost:8080/api");
 			log.info(jsonString.toString());
 		};
 	}
+
 }
+
